@@ -14,8 +14,10 @@
 
     public class BeeHives
     {
-        public ApplicationUsers? User { get; set; } // user
+        public int Id { get; set; }
         public int BeeHiveUserId { get; set; } // user id 
+        public ApplicationUsers? User { get; set; } // user
+        
         public string Location { get; set; }
         public BeeHiveStatus Status { get; set; }
         public BeeHiveDeactivationReason DeactivationReason { get; set; }

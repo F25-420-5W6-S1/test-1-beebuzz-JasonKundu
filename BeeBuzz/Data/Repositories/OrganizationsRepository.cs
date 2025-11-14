@@ -18,35 +18,71 @@ namespace BeeBuzz.Data.Repositories
             _specificLogger = specificLogger;
         }
 
-        public ICollection<ApplicationUsers> GetAllUsers(int organizationId)
+        public ICollection<ApplicationUsers> GetAllUsersByOrganizationId(int organizationId)
         {
 
             try
             {
-                _specificLogger.LogInformation("Getting all projects for Hackathon ID: {HackathonId}", hackathonId);
+                _specificLogger.LogInformation("Getting all users for organization: {organizationId}", organizationId);
 
                 var organizations = _dbSet
-                  .Include(p => p.Users)
-                      .ThenInclude(tm => tm.User)
-                  .Include(p => p.Organisation)
-                  .FirstOrDefault(p => p.Id == id);
-
-
-
-                _specificLogger.LogInformation("Found Organizations",
-                    organizations.Users.Count, organizationId);
-
-                List<ApplicationUsers> organizationUsers = [];
-                foreach( ApplicationUsers user in Organizations)
+                    .Where(org => org.OrganizationId == organizationId)
+                    .Include(org => org.Users)
+                    .ToList();
+                List<ApplicationUsers> users = [];
+                
+                foreach(Organizations org in organizations)
                 {
-                    organizationUsers.Append(user);
+                    users.AddRange(org.Users);
                 }
+                   
+                _specificLogger.LogInformation("Found {Count} users for organization ID: {ProjectId}",
+                    users.Count, organizationId);
 
+
+                    
                 return users;
             }
             catch (Exception ex)
             {
-                _specificLogger.LogError(ex, "Failed to get projects for Hackathon ID: {HackathonId}", hackathonId);
+                _specificLogger.LogError(ex, "Failed to get users for organization with id : {organizationId}", organizationId);
+                throw;
+            }
+
+        }
+
+        public ICollection<BeeHives> GetAllBeeHivesByOrganizationId(int organizationId)
+        {
+
+            try
+            {
+                _specificLogger.LogInformation("Getting all BeeHives for organization: {organizationId}", organizationId);
+
+                // get orgs
+                var organizations = _dbSet
+                    .Where(org => org.OrganizationId == organizationId)
+                    .Include(org => org.Users)
+                    .ToList();
+
+                // get users 
+                List<ApplicationUsers> users = [];
+                foreach (Organizations org in organizations)
+                {
+                    users.AddRange(org.Users);
+                }
+
+                List<BeeHives> beeHives = [];
+
+                foreach(ApplicationUsers appUser in users)
+                {
+                    beeHives.AddRange(appUser.ManagedBeeHives);
+                }
+
+                return beeHives;
+            }
+            catch (Exception ex)
+            {
+                _specificLogger.LogError(ex, "Failed to get beehives for organization with ID: {organizationId}", organizationId);
                 throw;
             }
 

@@ -1,6 +1,6 @@
 ﻿namespace BeeBuzz.Data.Entities
 {
-    public class organizations
+    public class Organizations
     {
         public int OrganizationId { get; set; }
         public int UniqueId { get; set; } // gov. id 

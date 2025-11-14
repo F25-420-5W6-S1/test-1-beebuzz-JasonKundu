@@ -1,7 +1,8 @@
 using BeeBuzz.Data;
 using BeeBuzz.Data.Entities;
-using BeeBuzz.Data.Repositories;
+using BeeBuzz.Data.Interfaces;
 using BeeBuzz.Data.Repositories.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,8 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//                    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // added this Identity for the users
 builder.Services.AddIdentity<ApplicationUsers, IdentityRole<int>>(options =>
 {
@@ -20,8 +23,7 @@ builder.Services.AddIdentity<ApplicationUsers, IdentityRole<int>>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 builder.Services.AddTransient<BeeBuzzSeeder>(); // added seeder
