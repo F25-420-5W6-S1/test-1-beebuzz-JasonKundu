@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 // added this Identity for the users
-builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+builder.Services.AddIdentity<ApplicationUsers, IdentityRole<int>>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;

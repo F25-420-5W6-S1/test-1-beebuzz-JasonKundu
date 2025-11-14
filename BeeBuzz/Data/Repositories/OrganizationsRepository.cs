@@ -1,5 +1,7 @@
 ﻿using BeeBuzz.Data.Entities;
 using BeeBuzz.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BeeBuzz.Data.Repositories
 {
@@ -16,33 +18,38 @@ namespace BeeBuzz.Data.Repositories
             _specificLogger = specificLogger;
         }
 
+        public ICollection<ApplicationUsers> GetAllUsers(int organizationId)
+        {
+
+            try
+            {
+                _specificLogger.LogInformation("Getting all projects for Hackathon ID: {HackathonId}", hackathonId);
+
+                var organizations = _dbSet
+                  .Include(p => p.Users)
+                      .ThenInclude(tm => tm.User)
+                  .Include(p => p.Organisation)
+                  .FirstOrDefault(p => p.Id == id);
 
 
-        // (from our code as example. Ignore if this is not deleted)
-        //public WinnerPositions GetByPosition(string position)
-        //{
-        //    try
-        //    {
-        //        _specificLogger.LogInformation("Getting WinnerPosition by position name: {Position}", position);
-        //        var winnerPosition = _dbSet
-        //            .FirstOrDefault(wp => wp.Position == position);
 
-        //        if (winnerPosition == null)
-        //        {
-        //            _specificLogger.LogWarning("WinnerPosition '{Position}' not found", position);
-        //        }
-        //        else
-        //        {
-        //            _specificLogger.LogInformation("Found WinnerPosition: {Position}", position);
-        //        }
+                _specificLogger.LogInformation("Found Organizations",
+                    organizations.Users.Count, organizationId);
 
-        //        return winnerPosition;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _specificLogger.LogError(ex, "Failed to get WinnerPosition by position: {Position}", position);
-        //        throw;
-        //    }
-        //}
+                List<ApplicationUsers> organizationUsers = [];
+                foreach( ApplicationUsers user in Organizations)
+                {
+                    organizationUsers.Append(user);
+                }
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                _specificLogger.LogError(ex, "Failed to get projects for Hackathon ID: {HackathonId}", hackathonId);
+                throw;
+            }
+
+        }
     }
 }

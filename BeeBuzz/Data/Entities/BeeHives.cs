@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace BeeBuzz.Data.Entities
+﻿namespace BeeBuzz.Data.Entities
 {
     public enum BeeHiveStatus
     {
         Active,
-        Inactive 
+        Inactive
     }
 
     public enum BeeHiveDeactivationReason
@@ -14,8 +12,10 @@ namespace BeeBuzz.Data.Entities
         Sold
     }
 
-    public class BeeHive
+    public class BeeHives
     {
+        public ApplicationUsers? User { get; set; } // user
+        public int BeeHiveUserId { get; set; } // user id 
         public string Location { get; set; }
         public BeeHiveStatus Status { get; set; }
         public BeeHiveDeactivationReason DeactivationReason { get; set; }

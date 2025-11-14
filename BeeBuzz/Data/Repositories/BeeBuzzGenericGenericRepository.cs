@@ -1,6 +1,7 @@
 ﻿using BeeBuzz.Data.Interfaces;
 using BeeBuzz.Data;
 using Microsoft.EntityFrameworkCore;
+using BeeBuzz.Data.Entities;
 
 namespace BeeBuzz.Data.Repositories
 {
@@ -9,6 +10,8 @@ namespace BeeBuzz.Data.Repositories
         internal readonly ILogger<BeeBuzzGenericGenericRepository<T>> _logger;
         internal readonly ApplicationDbContext _context;
         internal readonly DbSet<T> _dbSet;
+        private ApplicationDbContext db;
+        private ILogger<BeeBuzzGenericGenericRepository<BeeHives>> genericLogger;
 
         public BeeBuzzGenericGenericRepository(ApplicationDbContext db, ILogger<BeeBuzzGenericGenericRepository<T>> logger) 
         {
@@ -16,6 +19,13 @@ namespace BeeBuzz.Data.Repositories
             _context = db;
             _dbSet = _context.Set<T>();
         }
+
+        public BeeBuzzGenericGenericRepository(ApplicationDbContext db, ILogger<BeeBuzzGenericGenericRepository<BeeHives>> genericLogger)
+        {
+            this.db = db;
+            this.genericLogger = genericLogger;
+        }
+
         public void Add(T entity)
         {
             throw new NotImplementedException();
