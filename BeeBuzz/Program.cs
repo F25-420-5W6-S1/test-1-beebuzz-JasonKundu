@@ -5,6 +5,7 @@ using BeeBuzz.Data.Repositories.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,7 +25,7 @@ builder.Services.AddIdentity<ApplicationUsers, IdentityRole<int>>(options =>
     options.Password.RequiredLength = 6;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.AddControllers();
 
 builder.Services.AddTransient<BeeBuzzSeeder>(); // added seeder
 
@@ -44,7 +45,26 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 
+    using (var scope = app.Services.CreateScope())
+    {
+        try
+        {
+            var seeder = scope.ServiceProvider.GetRequiredService<BeeBuzzSeeder>();
+            await seeder.Seed();
+            Console.WriteLine("Database seeded successfully");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine( "An error occurred while seeding the database");
+        }
+    }
+}
 
 
 
