@@ -4,7 +4,7 @@ namespace BeeBuzz.Data.Entities
 {
     public enum BeeHiveStatus
     {
-        Active ,
+        Active,
         Inactive 
     }
 
@@ -16,7 +16,6 @@ namespace BeeBuzz.Data.Entities
 
     public class BeeHive
     {
-
         public string Location { get; set; }
         public BeeHiveStatus Status { get; set; }
         public BeeHiveDeactivationReason DeactivationReason { get; set; }

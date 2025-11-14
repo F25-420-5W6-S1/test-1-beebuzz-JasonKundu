@@ -6,15 +6,17 @@ Welcome to the BeeBuzz App
 
 The BeeBuzz App should be a way to manage the bee hives.
 Usually there is at least one user that is part of an organization.
-One organization can have multiple users and the OrganizationId is mandatory and uniq id provided by the government.
+
+One organization can have multiple users and the OrganizationId is mandatory and uniq id provided by the government. (done)
+
 One user will have multiple bee hives to manage. (done)
 A bee hive will have : location/ address, status (active/inactive), reason for deactivation(dead, sold) (done)
 
 To do:
-1. Make the application runnable. (2%)
+1. Make the application runnable. (2%) (done)
 2. Add the Identity middleware (2%)
 2. Create the entities for
-   User,
+   User, (done?)
    Organization, 
    Beehive (2%) (Done)
 3. Create the specific repos for the entities (2%)

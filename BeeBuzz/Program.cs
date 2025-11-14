@@ -1,4 +1,7 @@
+using BeeBuzz.Data;
 using BeeBuzz.Data.Entities;
+using BeeBuzz.Data.Repositories;
+using BeeBuzz.Data.Repositories.Helpers;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +19,20 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequiredLength = 6;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
+
+builder.Services.AddTransient<BeeBuzzSeeder>(); // added seeder
+
+builder.Services.AddScoped<IRepositoryProvider>(sp =>
+{
+    var context = sp.GetRequiredService<ApplicationDbContext>();
+    var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
+    return new RepositoryProvider(context, loggerFactory);
 });
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -25,6 +41,20 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
